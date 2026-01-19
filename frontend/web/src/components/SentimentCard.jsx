@@ -5,40 +5,33 @@ export default function SentimentCard({
   onTextChange,
   result,
   onAnalyze,
+  loading,
 }) {
   return (
     <div className="w-full max-w-lg bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl p-8">
-      <h1 className="text-3xl font-extrabold text-center">
+      <h1 className="text-3xl font-extrabold text-center mb-2">
         Sentiment Analyzer
       </h1>
 
-      <p className="text-center text-sm text-gray-500 mt-1">
-        Feel the emotion behind words ✨
-      </p>
-
-      <div className="mt-8">
-        <label className="block text-sm font-semibold mb-2">
-          Your text
-        </label>
-
-        <textarea
-          value={text}
-          onChange={(e) => onTextChange(e.target.value)}
-          placeholder="Example: I absolutely loved the experience!"
-          className="w-full h-32 p-4 rounded-xl border resize-none"
-        />
-      </div>
+      <textarea
+        value={text}
+        onChange={(e) => onTextChange(e.target.value)}
+        placeholder="Type something..."
+        className="w-full h-32 p-4 rounded-xl border focus:outline-none"
+      />
 
       <button
         onClick={onAnalyze}
+        disabled={loading}
         className="w-full mt-6 py-3 rounded-xl text-white font-semibold
-                   bg-gradient-to-r from-purple-600 to-pink-600"
+                   bg-gradient-to-r from-purple-600 to-pink-600
+                   disabled:opacity-60"
       >
-        Analyze Sentiment 🚀
+        {loading ? "Analyzing..." : "Analyze Sentiment"}
       </button>
 
       <div className="mt-6 text-center">
-        <div className="inline-block px-6 py-2 rounded-full font-bold">
+        <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold">
           {result || "—"}
         </div>
       </div>
