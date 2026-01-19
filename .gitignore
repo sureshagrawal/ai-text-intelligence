@@ -2,6 +2,8 @@
 __pycache__/
 *.pyc
 .env
+ml/venv
+backend/venv
 venv/
 
 # ---------------- Node ----------------
@@ -10,6 +12,7 @@ dist/
 build/
 
 # ---------------- MLflow ----------------
+ml/mlruns/
 mlruns/
 mlflow.db
 artifacts/

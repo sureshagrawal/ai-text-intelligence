@@ -1,21 +1,9 @@
-"""
-Sentiment Service Layer
-
-NOW USING: MLflow registered model (Demo)
-
-Dummy logic is kept BELOW (commented)
-for reference / rollback if needed.
-"""
-
-# =================================================
-# 🟢 ACTIVE — MLflow-based inference (Document-5)
-# =================================================
 import mlflow.pyfunc
 from app.core.config import settings
 
 _model = None
 
-def load_model():
+def _load_model():
     global _model
     if _model is None:
         _model = mlflow.pyfunc.load_model(
@@ -25,23 +13,23 @@ def load_model():
 
 
 def analyze_sentiment(text: str):
-    model = load_model()
-    prediction = model.predict([text])[0]
+    if not text or not text.strip():
+        raise ValueError("EMPTY_TEXT")
+
+    model = _load_model()
+
+    # Predict class
+    pred = model.predict([text])[0]
+
+    # Predict probabilities (for confidence)
+    if hasattr(model, "_model_impl") and hasattr(model._model_impl, "predict_proba"):
+        probs = model._model_impl.predict_proba([text])[0]
+        confidence = round(float(max(probs)) * 100)
+    else:
+        confidence = 0
 
     return {
-        "sentiment": prediction,
-        "confidence": 0.90,   # demo confidence
-        "source": "mlflow"
+        "sentiment": pred.capitalize(),
+        "confidence": confidence,
+        "source": "mlflow",
     }
-
-# =================================================
-# 🔴 OLD — Dummy logic [COMMENTED]
-# =================================================
-"""
-def analyze_sentiment(text: str):
-    return {
-        "sentiment": "Positive",
-        "confidence": 0.95,
-        "source": "dummy"
-    }
-"""
