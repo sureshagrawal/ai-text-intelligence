@@ -2,17 +2,17 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Install deps
-COPY ml/requirements.txt .
+# Install dependencies
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy ML code
-COPY ml/ .
+COPY . .
 
 EXPOSE 5000
 
 CMD mlflow server \
   --host 0.0.0.0 \
-  --port 5000 \
-  --backend-store-uri sqlite:///mlflow.db \
-  --default-artifact-root ./artifacts
+  --port $PORT \
+  --backend-store-uri $DATABASE_URL \
+  --default-artifact-root /mlflow/artifacts
