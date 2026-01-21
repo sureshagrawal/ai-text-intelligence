@@ -3,6 +3,10 @@ export default function SentimentCard({ result }) {
 
   const { sentiment, confidence, source } = result;
 
+  // ✅ Normalize backend sentiment (positive → Positive)
+  const normalizedSentiment =
+    sentiment.charAt(0).toUpperCase() + sentiment.slice(1);
+
   const configMap = {
     Positive: {
       gradient: "from-green-400 to-emerald-600",
@@ -24,7 +28,8 @@ export default function SentimentCard({ result }) {
     },
   };
 
-  const cfg = configMap[sentiment] || configMap.Neutral;
+  // ✅ Use normalized sentiment for UI mapping
+  const cfg = configMap[normalizedSentiment] || configMap.Neutral;
 
   return (
     <div className="mt-8 w-full max-w-xl rounded-2xl border border-white/20 bg-white/10 backdrop-blur-xl p-6 shadow-xl transition-all">
@@ -34,7 +39,7 @@ export default function SentimentCard({ result }) {
           <span className="text-4xl animate-bounce">{cfg.emoji}</span>
           <div>
             <div className="text-xl font-bold text-white">
-              {sentiment}
+              {normalizedSentiment}
             </div>
             <div className="text-sm text-white/70">
               {cfg.label}
@@ -42,9 +47,7 @@ export default function SentimentCard({ result }) {
           </div>
         </div>
 
-        <span className="text-xs text-white/60">
-          source: {source}
-        </span>
+
       </div>
 
       {/* Confidence Bar */}
