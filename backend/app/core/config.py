@@ -5,17 +5,24 @@ load_dotenv()
 
 
 class Settings(BaseSettings):
-    # Controls WHICH inference system backend uses
-    # Today: mlflow
-    # Future: http
+    # =================================
+    # WHICH predictor to use
+    # =================================
     ML_PREDICTOR_TYPE: str = "mlflow"
 
-    # MLflow config (used only for mlflow predictor)
+    # =================================
+    # MLflow
+    # =================================
     MLFLOW_TRACKING_URI: str | None = None
     MLFLOW_MODEL_URI: str | None = None
 
-    # HTTP ML service config (used only for http predictor)
+    # =================================
+    # HTTP / HF inference
+    # =================================
     ML_SERVICE_URL: str | None = None
+
+    # ✅ ADD THIS LINE (VERY IMPORTANT)
+    HF_TOKEN: str | None = None
 
 
 settings = Settings()
